@@ -1,3 +1,3 @@
 package com.imangazaliev.notelin.bus
 
-class NoteEditAction(val noteId: Long)
+class NoteEditAction(val noteId: String)

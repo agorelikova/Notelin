@@ -1,24 +1,24 @@
 package com.imangazaliev.notelin.mvp.model
 
+import com.google.gson.annotations.SerializedName
 import com.imangazaliev.notelin.utils.formatDate
-import com.reactiveandroid.Model
-import com.reactiveandroid.annotation.Column
-import com.reactiveandroid.annotation.PrimaryKey
 import com.reactiveandroid.annotation.Table
 import java.util.*
 
 @Table(name = "Notes", database = AppDatabase::class)
-class Note : Model {
+class Note {
 
-    @PrimaryKey
-    var id: Long = 0
-    @Column(name = "title")
+//    @PrimaryKey
+    var id: String = ""
+//    @Column(name = "title")
     var title: String? = null
-    @Column(name = "text")
+//    @Column(name = "text")
     var text: String? = null
-    @Column(name = "created_at")
+//    @Column(name = "created_at")
+    @SerializedName("created")
     var createAt: Date? = null
-    @Column(name = "change_at")
+//    @Column(name = "change_at")
+    @SerializedName("modified")
     var changedAt: Date? = null
 
     constructor(title: String, createDate: Date) {

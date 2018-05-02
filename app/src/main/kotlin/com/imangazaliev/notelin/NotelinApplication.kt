@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import com.imangazaliev.notelin.di.AppComponent
 import com.imangazaliev.notelin.di.DaggerAppComponent
+//import com.imangazaliev.notelin.di.DaggerAppComponent
 import com.imangazaliev.notelin.di.NoteDaoModule
 import com.imangazaliev.notelin.mvp.model.AppDatabase
 import com.imangazaliev.notelin.mvp.model.Note
@@ -26,13 +27,13 @@ class NotelinApplication : Application() {
         context = this
         graph = DaggerAppComponent.builder().noteDaoModule(NoteDaoModule()).build()
 
-        val appDatabaseConfig = DatabaseConfig.Builder(AppDatabase::class.java)
-                .addModelClasses(Note::class.java)
-                .build()
+//        val appDatabaseConfig = DatabaseConfig.Builder(AppDatabase::class.java)
+//                .addModelClasses(Note::class.java)
+//                .build()
 
-        ReActiveAndroid.init(ReActiveConfig.Builder(this)
-                .addDatabaseConfigs(appDatabaseConfig)
-                .build())
+//        ReActiveAndroid.init(ReActiveConfig.Builder(this)
+//                .addDatabaseConfigs(appDatabaseConfig)
+//                .build())
     }
 
 }

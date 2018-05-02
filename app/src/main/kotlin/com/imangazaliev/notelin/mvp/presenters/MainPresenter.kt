@@ -44,22 +44,29 @@ class MainPresenter : MvpPresenter<MainView>() {
 
     fun deleteAllNotes() {
         noteDao.deleteAllNotes()
-        notesList.removeAll(notesList)
-        viewState.onAllNotesDeleted()
+                .subscribe { res ->
+                    notesList.removeAll(notesList)
+                    viewState.onAllNotesDeleted()
+                }
+
     }
 
     fun deleteNoteByPosition(position: Int) {
         val note = notesList[position]
         noteDao.deleteNote(note)
-        notesList.remove(note)
-        viewState.onNoteDeleted()
+                .subscribe { res ->
+                    notesList.remove(note)
+                    viewState.onNoteDeleted()
+                }
     }
 
     fun openNewNote() {
-        val newNote = noteDao.createNote()
-        notesList.add(newNote)
-        sortNotesBy(getCurrentSortMethod())
-        viewState.openNoteScreen(newNote.id)
+        noteDao.createNote()
+                .subscribe {newNote ->
+                    notesList.add(newNote)
+                    sortNotesBy(getCurrentSortMethod())
+                    viewState.openNoteScreen(newNote.id)
+                }
     }
 
     fun openNote(position: Int) {
@@ -84,8 +91,11 @@ class MainPresenter : MvpPresenter<MainView>() {
     @Subscribe
     fun onNoteEdit(action: NoteEditAction) {
         val notePosition = getNotePositionById(action.noteId)
-        notesList[notePosition] = noteDao.getNoteById(action.noteId)!!
-        sortNotesBy(getCurrentSortMethod())
+         noteDao.getNoteById(action.noteId)
+                .subscribe{ res ->
+                    notesList[notePosition] = res
+                    sortNotesBy(getCurrentSortMethod())
+                }
     }
 
     @Subscribe
@@ -121,9 +131,12 @@ class MainPresenter : MvpPresenter<MainView>() {
     }
 
     private fun loadAllNotes() {
-        notesList = noteDao.loadAllNotes()
-        Collections.sort(notesList, getCurrentSortMethod())
-        viewState.onNotesLoaded(notesList)
+        noteDao.loadAllNotes()
+                .subscribe { notesLst ->
+                    notesList = notesLst
+                    Collections.sort(notesLst, getCurrentSortMethod())
+                    viewState.onNotesLoaded(notesLst)
+                }
     }
 
     private fun getCurrentSortMethod(): SortNotesBy {
@@ -132,6 +145,6 @@ class MainPresenter : MvpPresenter<MainView>() {
         return SortNotesBy.valueOf(currentSortMethodName)
     }
 
-    private fun getNotePositionById(noteId: Long) = notesList.indexOfFirst { it.id == noteId }
+    private fun getNotePositionById(noteId: String) = notesList.indexOfFirst { it.id == noteId }
 
 }

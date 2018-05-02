@@ -1,3 +1,3 @@
 package com.imangazaliev.notelin.bus
 
-class NoteDeleteAction(val noteId: Long)
+class NoteDeleteAction(val noteId: String)

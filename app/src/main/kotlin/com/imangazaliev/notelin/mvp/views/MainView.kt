@@ -30,6 +30,6 @@ interface MainView : MvpView {
 
     fun hideNoteContextDialog()
 
-    fun openNoteScreen(noteId: Long)
+    fun openNoteScreen(noteId: String)
 
 }

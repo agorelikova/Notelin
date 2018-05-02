@@ -24,7 +24,7 @@ class NoteActivity : MvpAppCompatActivity(), NoteView {
     companion object {
         const val NOTE_DELETE_ARG = "note_id"
 
-        fun buildIntent(activity: Activity, noteId: Long) : Intent{
+        fun buildIntent(activity: Activity, noteId: String) : Intent{
             val intent = Intent(activity, NoteActivity::class.java)
             intent.putExtra(NOTE_DELETE_ARG, noteId)
             return intent
@@ -38,7 +38,7 @@ class NoteActivity : MvpAppCompatActivity(), NoteView {
 
     @ProvidePresenter
     fun provideHelloPresenter(): NotePresenter {
-        val noteId = intent.extras.getLong(NOTE_DELETE_ARG, -1)
+        val noteId = intent.extras.getString(NOTE_DELETE_ARG, "")
         return NotePresenter(noteId)
     }
 

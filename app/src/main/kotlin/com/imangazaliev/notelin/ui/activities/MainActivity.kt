@@ -124,7 +124,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         return true
     }
 
-    override fun openNoteScreen(noteId: Long) {
+    override fun openNoteScreen(noteId: String) {
         startActivity(NoteActivity.buildIntent(this, noteId))
     }
 

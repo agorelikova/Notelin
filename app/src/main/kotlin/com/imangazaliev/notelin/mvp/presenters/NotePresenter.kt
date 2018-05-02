@@ -13,7 +13,7 @@ import java.util.*
 import javax.inject.Inject
 
 @InjectViewState
-class NotePresenter(val noteId: Long) : MvpPresenter<NoteView>() {
+class NotePresenter(val noteId: String) : MvpPresenter<NoteView>() {
 
     @Inject
     lateinit var noteDao: NoteDao
@@ -26,8 +26,11 @@ class NotePresenter(val noteId: Long) : MvpPresenter<NoteView>() {
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
 
-        note = noteDao.getNoteById(noteId)!!
-        viewState.showNote(note)
+        noteDao.getNoteById(noteId)
+                .subscribe { result ->
+                    note = result
+                    viewState.showNote(note)
+                }
     }
 
     fun saveNote(title: String, text: String) {
@@ -35,8 +38,11 @@ class NotePresenter(val noteId: Long) : MvpPresenter<NoteView>() {
         note.text = text
         note.changedAt = Date()
         noteDao.saveNote(note)
-        EventBus.getDefault().post(NoteEditAction(note.id))
-        viewState.onNoteSaved()
+                .subscribe { id ->
+                    EventBus.getDefault().post(NoteEditAction(note.id))
+                    viewState.onNoteSaved()
+                }
+
     }
 
     fun deleteNote() {
@@ -44,8 +50,10 @@ class NotePresenter(val noteId: Long) : MvpPresenter<NoteView>() {
         // so we should save one before delete operation
         val noteId = note.id
         noteDao.deleteNote(note)
-        EventBus.getDefault().post(NoteDeleteAction(noteId))
-        viewState.onNoteDeleted()
+                .subscribe{ res ->
+                    EventBus.getDefault().post(NoteDeleteAction(noteId))
+                    viewState.onNoteDeleted()
+                }
     }
 
     fun showNoteDeleteDialog() {
